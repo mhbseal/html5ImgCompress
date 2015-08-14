@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>others</title>
+    <script src="../src/libs/jquery-1.11.1.min.js"></script>
+    <script src="../dist/html5UploadImg.bundle.js"></script>
+    <style>
+        img {
+            max-width: 100%;
+        }
+    </style>
+    <script>
+
+        $(function() {
+            $('input').on('change', function(e) {
+                new html5UploadImg(e.target.files[0], {
+                    done: function(base64, origin) {
+                        $('#before').html('原图：' + (origin.size / 1024).toFixed(2) + 'KB');
+                        $('#before').append('<img src="' + URL.createObjectURL(origin) + '" />');
+                        $('#after').html('处理后：' + (base64.length / 1024).toFixed(2) + 'KB');
+                        $('#after').append('<img src="' + base64 + '" />');
+                    }
+                });
+            })
+        });
+    </script>
+</head>
+<body>
+    <input type="file"  />
+<div id="before">
+</div>
+<div id="after">
+</div>
+</body>
+</html>
