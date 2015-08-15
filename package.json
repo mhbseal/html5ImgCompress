@@ -3,5 +3,8 @@
   "description": "html5UploadImg",
   "version": "0.1.0",
   "author": "Mu Haibao<mhbseal@163.com>",
-  "homepage": "http://github.com/mhbseal/html5UploadImg"
+  "homepage": "http://github.com/mhbseal/html5UploadImg",
+  "devDependencies": {
+    "webpack": "^1.11.0"
+  }
 }

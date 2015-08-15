@@ -1,24 +1,23 @@
 var
-	path = require('path'),
 	paths = {
 		src : './src/',
 		dist: './dist/'
 	},
 	config = {
 		entry: {
-			html5UploadImg: paths.src + 'html5UploadImg.js'
+			html5UploadImg: paths.src + 'html5UploadImg'
 		},
 		output: {
 			path: paths.dist,
-			filename: '[name].bundle.js',
-			chunkFilename: "[name].chunk.js"
+			filename: '[name].js',
+			chunkFilename: "[id].chunk.js"
 		},
 		resolve: {
-			root: paths.src,
+			root: paths.src + 'libs/',
 			alias: {
-				JPEGEncoder: 'libs/jpeg_encoder_basic.js',
-				EXIF: 'libs/exif.js',
-				MegaPixImage: 'libs/megapix-image.js'
+				JPEGEncoder: 'jpeg_encoder_basic',
+				EXIF: 'exif',
+				MegaPixImage: 'megapix-image'
 			}
 		}
 	};
