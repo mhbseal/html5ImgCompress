@@ -4,7 +4,7 @@ var
   isAndroid = ~ua.indexOf('Android'),
   isOldIos = (function () {
     var match = navigator.userAgent.match(/(\d)_\d like Mac OS/);
-    return match && match[1] > 7;
+    return match && match[1] <= 7;
   })(),
   URL = window.URL || window.webkitURL,
   scripts = document.scripts,
@@ -17,9 +17,9 @@ __webpack_public_path__ = src.substr(0, src.lastIndexOf('/') + 1);
  * 组件构造器
  * @param {file} 上传文件
  * @param {object}
- *   maxWidth: {number} 最大宽度
+ *   maxWidth: {number} 最大宽度(如果最大高宽同时存在则根据原图的高宽比例来计算以哪个为准)
  *   maxHeight: {number} 最大高度
- *   quality: {number} 高宽压缩后的质量，再次压缩的比例值，取值范围 0-1
+ *   quality: {number} 质量等级(类似PS保存事的质量等级，并不是压缩比例)，取值范围 0-1
  *   done: {function} 成功handler
  *   notSupport: {function} 浏览器不支持handler
  */
@@ -53,7 +53,7 @@ html5UploadImg.prototype = {
       self = this,
       img = new Image(),
       fileURL = URL.createObjectURL(file),
-      size, canvas, ctx, iosImg, quality, encoder, base64, handler;
+      size, canvas, ctx, iosImg, quality, encoder, base64, handler, iosRenderOptions;
 
     img.src = fileURL;
 
@@ -62,18 +62,23 @@ html5UploadImg.prototype = {
         quality = self.options.quality
         size = self.getSize(img, orientation);
         canvas = document.createElement('canvas');
-        canvas.width = size.maxWidth;
-        canvas.height = size.maxHeight;
+        canvas.width = size.width;
+        canvas.height = size.height;
         ctx = canvas.getContext('2d');
 
         if (isOldIos) { // iOS6/iOS7
           require(['MegaPixImage'], function (MegaPixImage) {
             iosImg = new MegaPixImage(img);
-            iosImg.render(canvas, {
+            iosRenderOptions = {
               maxWidth: canvas.width,
               maxHeight: canvas.height,
               orientation: orientation
-            });
+            }
+            if (~"68".indexOf(orientation)) { // 90，270度则高宽互换
+              iosRenderOptions.maxWidth = canvas.height;
+              iosRenderOptions.maxHeight = canvas.width;
+            }
+            iosImg.render(canvas, iosRenderOptions);
             base64 = canvas.toDataURL('image/jpeg', quality);
 
             self.done(canvas, img, fileURL, base64, file);
@@ -97,7 +102,7 @@ html5UploadImg.prototype = {
           }
 
           if (isAndroid && isInWechat) { // 安卓微信下压缩有问题
-            require.ensure(['JPEGEncoder'], function (JPEGEncoder) {
+            require(['JPEGEncoder'], function (JPEGEncoder) {
               encoder = new JPEGEncoder();
               base64 = encoder.encode(ctx.getImageData(0, 0, canvas.width, canvas.height), quality * 100);
               self.done(canvas, img, fileURL, base64, file);
@@ -117,7 +122,7 @@ html5UploadImg.prototype = {
           })
         })
       } else {
-        handler(1);
+        handler();
       }
     }
 
@@ -158,24 +163,28 @@ html5UploadImg.prototype = {
     if (mW && mH) {
       if (scale >= mW / mH) {
         if (w > mW) {
-          mH = mW / scale;
+          h = mW / scale;
+          w = mW;
         }
       } else {
         if (h > mH) {
-          mW = mH * scale;
+          w = mH * scale;
+          h = mH;
         }
       }
     } else if (mW) {
       if (mW < w) {
-        mH = mW / scale;
+        h = mW / scale;
+        w = mW;
       }
     } else if (mH) {
       if (mH < h) {
-        mW = mH * scale;
+        w = mH * scale;
+        h = mH;
       }
     }
 
-    return { width: mW, height: mH };
+    return { width: w, height: h };
   }
 };
 
@@ -183,7 +192,7 @@ html5UploadImg.prototype = {
 html5UploadImg.DEFAULTE = {
   maxWidth: 1024,
   maxHeight: 768,
-  quality: 0.8,
+  quality: 0.6,
   done: function() { console.log('done') },
   notSupport: function() { console.log('brower not support html5 upload img') }
 }

@@ -9,7 +9,7 @@ var
 		},
 		output: {
 			path: paths.dist,
-			filename: '[name].js',
+			filename: '[name].min.js',
 			chunkFilename: "[id].chunk.js"
 		},
 		resolve: {

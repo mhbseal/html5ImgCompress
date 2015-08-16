@@ -1,6 +1,6 @@
 /*
 
-  Basic GUI blocking jpeg encoder ported to JavaScript and optimized by 
+  Basic GUI blocking jpeg encoder ported to JavaScript and optimized by
   Andreas Ritter, www.bytestrom.eu, 11/2009.
 
   Example usage is given at the bottom of this file.
@@ -792,3 +792,5 @@ function example(quality){
     img.src = jpegURI;
     document.body.appendChild(img);
 }*/
+
+module.exports = JPEGEncoder;

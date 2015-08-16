@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>html5UploadImg</title>
+  <script src="./jquery-1.11.1.min.js"></script>
+  <script src="../dist/html5UploadImg.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    input {
+      margin: 10px 0 0 10px;
+    }
+    #before, #after {
+      margin: 10px;
+      font-size: 14px;
+      line-height: 1.5em;
+    }
+    span {
+      color: red;
+    }
+    img {
+      max-width: 100%;
+      margin-top: 10px;
+    }
+  </style>
+  <script>
+    $(function () {
+      $('input').on('change', function (e) {
+        new html5UploadImg(e.target.files[0], {
+          done: function (base64, file) {
+            insertImg(file); // 原图
+            insertImg(base64); // 处理后
+          }
+        });
+      })
+    });
+
+    function insertImg(file) {
+      var
+        img = new Image(),
+        title, src, size, $dom, base;
+
+      if (typeof file === 'object') {
+        title = '处理前';
+        size = file.size;
+        src = URL.createObjectURL(file);
+        $dom = $('#before');
+        base = 1024;
+      } else {
+        title = '处理后';
+        size = file.length;
+        src = file;
+        $dom = $('#after');
+        base = 1333;
+      }
+
+      img.onload = function() {
+        $dom.html(title + '<br />质量约：<span>' + (size / base).toFixed(2) + 'KB</span>' + '&nbsp;&nbsp;&nbsp;&nbsp;尺寸：<span>' + this.width + '*' + this.height + '</span><br />').append(img);
+      };
+      img.src = src;
+    };
+  </script>
+</head>
+<body>
+<input type="file"/>
+<div id="before"></div>
+<div id="after"></div>
+</body>
+</html>
