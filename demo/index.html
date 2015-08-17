@@ -14,10 +14,12 @@
     input {
       margin: 10px 0 0 10px;
     }
-    #before, #after {
+    div[class^="box_"] {
       margin: 10px;
+      padding: 10px;
       font-size: 14px;
       line-height: 1.5em;
+      border: 2px dashed #ccc;
     }
     span {
       color: red;
@@ -28,46 +30,59 @@
     }
   </style>
   <script>
+    var j = 1;
+
     $(function () {
       $('input').on('change', function (e) {
-        new html5UploadImg(e.target.files[0], {
-          done: function (base64, file) {
-            insertImg(file); // 原图
-            insertImg(base64); // 处理后
-          }
-        });
+        var
+          i = 0,
+          files = e.target.files,
+          len = files.length;
+
+        for (; i < len; i++) { // 循环多张图片，单张可以省略for循环直接files[0]
+          new html5UploadImg(files[i], {
+            done: function (base64, file) { // 这里是异步回调，i的顺序不能保证
+              insertImg(file, j); // 原图
+              insertImg(base64, j++); // 处理后
+            }
+          });
+        }
       })
     });
 
-    function insertImg(file) {
+    function insertImg(file, j) {
       var
         img = new Image(),
-        title, src, size, $dom, base;
+        title, src, size, base;
 
       if (typeof file === 'object') {
-        title = '处理前';
+        title = '前';
         size = file.size;
         src = URL.createObjectURL(file);
-        $dom = $('#before');
         base = 1024;
       } else {
-        title = '处理后';
+        title = '后';
         size = file.length;
         src = file;
-        $dom = $('#after');
         base = 1333;
       }
 
+      if (!$('.box_' + j).length) {
+        $('#box').prepend('<div class="box_' + j + '" />'); // 逆序，方便demo多次上传预览
+      }
+
       img.onload = function() {
-        $dom.html(title + '<br />质量约：<span>' + (size / base).toFixed(2) + 'KB</span>' + '&nbsp;&nbsp;&nbsp;&nbsp;尺寸：<span>' + this.width + '*' + this.height + '</span><br />').append(img);
+        $('.box_' + j).prepend(img).prepend('<p>图片' + j + '，处理' + title + '</p><p>质量约：<span>' + (size / base).toFixed(2) + 'KB</span>' + '&nbsp;&nbsp;&nbsp;&nbsp;尺寸：<span>' + this.width + '*' + this.height + '</span></p>');
       };
+
       img.src = src;
+
+      file = null; // 处理完后记得清缓存
     };
   </script>
 </head>
 <body>
-<input type="file"/>
-<div id="before"></div>
-<div id="after"></div>
+<input type="file" multiple="multiple"/>
+<div id="box"></div>
 </body>
 </html>

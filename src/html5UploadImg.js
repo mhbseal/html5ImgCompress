@@ -190,8 +190,8 @@ html5UploadImg.prototype = {
 
 // 默认参数
 html5UploadImg.DEFAULTE = {
-  maxWidth: 1024,
-  maxHeight: 768,
+  maxWidth: 1000,
+  maxHeight: 1000,
   quality: 0.6,
   done: function() { console.log('done') },
   notSupport: function() { console.log('brower not support html5 upload img') }
