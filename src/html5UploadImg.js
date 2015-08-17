@@ -16,11 +16,13 @@ __webpack_public_path__ = src.substr(0, src.lastIndexOf('/') + 1);
 /**
  * 组件构造器
  * @param {file} 上传文件
- * @param {object}
- *   maxWidth: {number} 最大宽度(如果最大高宽同时存在则根据原图的高宽比例来计算以哪个为准)
- *   maxHeight: {number} 最大高度
- *   quality: {number} 质量等级(类似PS保存事的质量等级，并不是压缩比例)，取值范围 0-1
+ * @param {object} options选项
+ *   maxWidth: {number} 最大宽度(如果最大高宽同时存在则根据原图的高宽比例来计算以哪个为准)，默认值1000
+ *   maxHeight: {number} 最大高度，默认值1000
+ *   quality: {number} 质量等级(类似PS保存事的质量等级，并不是压缩比例)，取值范围 0-1，默认值0.6
  *   done: {function} 成功handler
+ *     @param {string} 生成的base64图片
+ *     @param {file} 原始上传文件
  *   notSupport: {function} 浏览器不支持handler
  */
 function html5UploadImg(file, options) {
@@ -193,7 +195,7 @@ html5UploadImg.DEFAULTE = {
   maxWidth: 1000,
   maxHeight: 1000,
   quality: 0.6,
-  done: function() { console.log('done') },
+    done: function() { console.log('done') },
   notSupport: function() { console.log('brower not support html5 upload img') }
 }
 
