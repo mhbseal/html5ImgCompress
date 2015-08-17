@@ -1,9 +1,7 @@
-# html5UploadImg
-
-### demo
+### DEMO
 http://mhbseal.com/demo/html5/html5UploadImg/demo/index.html
 ### 使用
-1.引入/dist目录(这里采用的是异步加载兼容js，chunk123异步引入处理hack不能删除)  
+1.引入/dist目录(这里采用的是异步加载兼容js，chunk123为处理hack的js，不能删除)  
 2.html中插入
 
     <script src="/dist/html5UploadImg.min.js"></script>  
