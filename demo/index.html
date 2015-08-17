@@ -37,15 +37,24 @@
         var
           i = 0,
           files = e.target.files,
-          len = files.length;
+          len = files.length,
+          notSupport = false;
 
-        for (; i < len; i++) { // 循环多张图片，单张可以省略for循环直接files[0]
-          new html5UploadImg(files[i], {
-            done: function (base64, file) { // 这里是异步回调，i的顺序不能保证
-              insertImg(file, j); // 原图
-              insertImg(base64, j++); // 处理后
-            }
-          });
+        // 循环多张图片，需要for循环和notSupport变量支持
+        for (; i < len; i++) {
+          if (!notSupport) {
+            new html5UploadImg(files[i], {
+              done: function (base64, file) { // 这里是异步回调，i的顺序不能保证
+                insertImg(file, j); // 原图
+                insertImg(base64, j++); // 处理后
+                // ...
+              },
+              notSupport: function() {
+                notSupport = true;
+                // ...
+              }
+            });
+          }
         }
       })
     });
