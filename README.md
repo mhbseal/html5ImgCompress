@@ -39,4 +39,4 @@ http://mhbseal.com/demo/html5/html5UploadImg/demo/index.html
 1.图片方向处理  
 2.安卓微信压缩问题hack  
 3.IOS6/7压缩扭曲  
-4.多张上传（安卓目前版本4.5-不支持，具体代码见demo）
+4.多张上传（安卓目前最高版本4.5，4.5-不支持，具体代码见demo）
