@@ -1,6 +1,6 @@
-### DEMO
+### demo
 http://mhbseal.com/demo/html5/html5UploadImg/demo/index.html
-### 使用
+### usage
 1.引入/dist目录(这里采用的是异步加载兼容js，chunk123为处理hack的js，不能删除)  
 2.html中插入
 
