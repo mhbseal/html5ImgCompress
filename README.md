@@ -13,11 +13,11 @@ http://mhbseal.com/demo/html5/html5UploadImg/demo/index.html
         new html5UploadImg(e.target.files[0], {
           done: function (base64, file) {
             console.log('done')
-            // ...
+            // ajax和服务器通信等操作...
           },
           notSupport: function() {
             console.log('brower not support html5 upload img')
-            // ...
+            // 不支持操作，例如PC在这里可以采用swfupload上传...
           }
         });
       }, false)
