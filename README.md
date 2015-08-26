@@ -11,13 +11,23 @@ http://mhbseal.com/demo/html5/html5UploadImg/demo/index.html
     <script>
       document.getElementsByTagName('input')[0].addEventListener("change", function(e) {
         new html5UploadImg(e.target.files[0], {
-          done: function (base64, file) {
-            console.log('done')
-            // ajax和服务器通信等操作...
+          before: function(file) {
+            console.log('before...');
+            // 这里一般是对file的校验
           },
-          notSupport: function() {
+          done: function (base64, file) {
+            console.log('done...');
+            // ajax和服务器通信等操作
+          },
+          fail: function(file) {
+            console.log('fail...');
+          },
+          complate: function(file) {
+            console.log('complate...');
+          },
+          notSupport: function(file) {
             console.log('brower not support html5 upload img')
-            // 不支持操作，例如PC在这里可以采用swfupload上传...
+            // 不支持操作，例如PC在这里可以采用swfupload上传
           }
         });
       }, false)
@@ -31,10 +41,17 @@ http://mhbseal.com/demo/html5/html5UploadImg/demo/index.html
       maxWidth: {number} 最大宽度(如果最大高宽同时存在则根据原图的高宽比例来计算以哪个为准)，默认值1000
       maxHeight: {number} 最大高度，默认值1000
       quality: {number} 质量等级(类似PS保存事的质量等级，并不是压缩比例)，取值范围 0-1，默认值0.6
+      before: {function} 压缩前handler
+        @param {file} 原始上传文件
       done: {function} 成功handler
         @param {string} 生成的base64图片
         @param {file} 原始上传文件
+      fail: {function} 失败handler
+        @param {file} 原始上传文件
+      complate: {function} 完成handler
+        @param {file} 原始上传文件
       notSupport: {function} 浏览器不支持handler
+        @param {file} 原始上传文件
 ### hack
 1.图片方向处理  
 2.安卓微信压缩问题hack  

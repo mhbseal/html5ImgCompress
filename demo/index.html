@@ -11,7 +11,7 @@
       margin: 0;
       padding: 0;
     }
-    input {
+    p {
       margin: 10px 0 0 10px;
     }
     div[class^="box_"] {
@@ -29,69 +29,108 @@
       margin-top: 10px;
     }
   </style>
-  <script>
-    var j = 1;
-
-    $(function () {
-      $('input').on('change', function (e) {
-        var
-          i = 0,
-          files = e.target.files,
-          len = files.length,
-          notSupport = false;
-
-        // 循环多张图片，需要for循环和notSupport变量支持
-        for (; i < len; i++) {
-          if (!notSupport) {
-            new html5UploadImg(files[i], {
-              done: function (base64, file) { // 这里是异步回调，i的顺序不能保证
-                insertImg(file, j); // 原图
-                insertImg(base64, j++); // 处理后
-                // ...
-              },
-              notSupport: function() {
-                notSupport = true;
-                // ...
-              }
-            });
-          }
-        }
-      })
-    });
-
-    function insertImg(file, j) {
-      var
-        img = new Image(),
-        title, src, size, base;
-
-      if (typeof file === 'object') {
-        title = '前';
-        size = file.size;
-        src = URL.createObjectURL(file);
-        base = 1024;
-      } else {
-        title = '后';
-        size = file.length;
-        src = file;
-        base = 1333;
-      }
-
-      if (!$('.box_' + j).length) {
-        $('#box').prepend('<div class="box_' + j + '" />'); // 逆序，方便demo多次上传预览
-      }
-
-      img.onload = function() {
-        $('.box_' + j).prepend(img).prepend('<p>图片' + j + '，处理' + title + '</p><p>质量约：<span>' + (size / base).toFixed(2) + 'KB</span>' + '&nbsp;&nbsp;&nbsp;&nbsp;尺寸：<span>' + this.width + '*' + this.height + '</span></p>');
-      };
-
-      img.src = src;
-
-      file = null; // 处理完后记得清缓存
-    };
-  </script>
 </head>
 <body>
-<input type="file" multiple="multiple"/>
+<p>单张：<input type="file" id="single" /></p>
+<p>多张：<input type="file" multiple="multiple" id="multiple" /></p>
 <div id="box"></div>
 </body>
+<script>
+  var j = 1;
+
+  $(function () {
+    // 单张
+    $('#single').on('change', function (e) {
+      new html5UploadImg(e.target.files[0], {
+        before: function(file) {
+          console.log('single: before...');
+        },
+        done: function (file, base64) {
+          console.log('single: done...');
+          insertImg(file, j);
+          insertImg(base64, j++);
+        },
+        fail: function(file) {
+          console.log('single: fail...');
+        },
+        complate: function(file) {
+          console.log('single: complate...');
+        },
+        notSupport: function(file) {
+          alert('not support!');
+        }
+      });
+    });
+
+    // 多张
+    $('#multiple').on('change', function (e) {
+      var
+        i = 0,
+        files = e.target.files,
+        len = files.length,
+        notSupport = false;
+
+      // 循环多张图片，需要for循环和notSupport变量支持
+      for (; i < len; i++) {
+        if (!notSupport) {
+          (function(i) {
+            new html5UploadImg(files[i], {
+              before: function(file) { // 图片处理前
+                i === 0 && console.log('multiple: first before...') // 开始
+                console.log('multiple: ' + i + ' before...'); // 单张开始
+              },
+              done: function (file, base64) { // 这里是异步回调，done中i的顺序不能保证
+                console.log('multiple: ' + i + ' done...'); // 单张成功
+                insertImg(file, j); // 原图
+                insertImg(base64, j++); // 处理后
+              },
+              fail: function(file) {
+                console.log('multiple: ' + i + ' fail...'); // 单张失败
+              },
+              complate: function(file) { // 图片处理完成，无论成败
+                console.log('multiple: ' + i + ' complate...'); // 单张完成
+                i === len - 1 && console.log('multiple: all complate...'); // 完成
+              },
+              notSupport: function(file) {
+                notSupport = true;
+                alert('not support!');
+              }
+            });
+          })(i);
+        }
+      }
+    })
+  });
+
+  // html中插入图片
+  function insertImg(file, j) {
+    var
+      img = new Image(),
+      title, src, size, base;
+
+    if (typeof file === 'object') {
+      title = '前';
+      size = file.size;
+      src = URL.createObjectURL(file);
+      base = 1024;
+    } else {
+      title = '后';
+      size = file.length;
+      src = file;
+      base = 1333;
+    }
+
+    if (!$('.box_' + j).length) {
+      $('#box').prepend('<div class="box_' + j + '" />'); // 逆序，方便demo多次上传预览
+    }
+
+    img.onload = function() {
+      $('.box_' + j).prepend(img).prepend('<p>图片' + j + '，处理' + title + '</p><p>质量约：<span>' + (size / base).toFixed(2) + 'KB</span>' + '&nbsp;&nbsp;&nbsp;&nbsp;尺寸：<span>' + this.width + '*' + this.height + '</span></p>');
+    };
+
+    img.src = src;
+
+    file = null; // 处理完后记得清缓存
+  };
+</script>
 </html>

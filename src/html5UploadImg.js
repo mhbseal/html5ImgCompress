@@ -20,10 +20,17 @@ __webpack_public_path__ = src.substr(0, src.lastIndexOf('/') + 1);
  *   maxWidth: {number} 最大宽度(如果最大高宽同时存在则根据原图的高宽比例来计算以哪个为准)，默认值1000
  *   maxHeight: {number} 最大高度，默认值1000
  *   quality: {number} 质量等级(类似PS保存事的质量等级，并不是压缩比例)，取值范围 0-1，默认值0.6
+ *   before: {function} 压缩前handler
+ *     @param {file} 原始上传文件
  *   done: {function} 成功handler
+ *     @param {file} 原始上传文件
  *     @param {string} 生成的base64图片
+ *   fail: {function} 失败handler
+ *     @param {file} 原始上传文件
+ *   complate: {function} 完成handler
  *     @param {file} 原始上传文件
  *   notSupport: {function} 浏览器不支持handler
+ *     @param {file} 原始上传文件
  */
 function html5UploadImg(file, options) {
   var DEFAULTE = html5UploadImg.DEFAULTE;
@@ -83,7 +90,7 @@ html5UploadImg.prototype = {
             iosImg.render(canvas, iosRenderOptions);
             base64 = canvas.toDataURL('image/jpeg', quality);
 
-            self.done(canvas, img, fileURL, base64, file);
+            self.handler('done', canvas, img, fileURL, base64, file);
           })
         } else { // 其他设备
           switch (orientation) { // 根据方向在画布不同的位置画图
@@ -107,13 +114,13 @@ html5UploadImg.prototype = {
             require(['JPEGEncoder'], function (JPEGEncoder) {
               encoder = new JPEGEncoder();
               base64 = encoder.encode(ctx.getImageData(0, 0, canvas.width, canvas.height), quality * 100);
-              self.done(canvas, img, fileURL, base64, file);
+              self.handler('done', canvas, img, fileURL, base64, file);
             })
           } else {
             base64 = canvas.toDataURL('image/jpeg', quality);
           }
 
-          self.done(canvas, img, fileURL, base64, file);
+          self.handler('done', canvas, img, fileURL, base64, file);
         }
       };
 
@@ -126,17 +133,23 @@ html5UploadImg.prototype = {
       } else {
         handler();
       }
-    }
+    };
 
+    img.onerror = function() {
+      self.handler('fail', canvas, img, fileURL, base64, file);
+    };
+
+    self.options.before(file);
   },
-  // 成功handler
-  done: function(canvas, img, fileURL, base64, file) {
+  // 处理句柄
+  handler: function(action, canvas, img, fileURL, base64, file) {
     // 释放内存
     canvas = null;
     img = null;
     URL.revokeObjectURL(fileURL);
 
-    this.options.done(base64, file);
+    this.options[action](file, base64);
+    this.options['complate'](file);
   },
   /**
    * 图片最大高宽校正（方向和比例）
@@ -195,8 +208,11 @@ html5UploadImg.DEFAULTE = {
   maxWidth: 1000,
   maxHeight: 1000,
   quality: 0.6,
-    done: function() { console.log('done') },
-  notSupport: function() { console.log('brower not support html5 upload img') }
+  before: function() {},
+  done: function() {},
+  fail: function() {},
+  complate: function() {},
+  notSupport: function() {}
 }
 
 
