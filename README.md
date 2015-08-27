@@ -55,7 +55,7 @@ http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
       notSupport: {function} 浏览器不支持handler
         @param {file} 原始上传文件
 ### hack
-1.图片方向处理  
-2.安卓微信压缩问题hack
+1.图片方向处理
+2.安卓微信压缩问题hack  
 3.IOS6/7压缩扭曲
 4.多张上传（如果浏览器支持）
