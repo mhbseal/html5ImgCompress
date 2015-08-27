@@ -5,7 +5,7 @@ var
 	},
 	config = {
 		entry: {
-			html5UploadImg: paths.src + 'html5UploadImg'
+			html5ImgCompress: paths.src + 'html5ImgCompress'
 		},
 		output: {
 			path: paths.dist,

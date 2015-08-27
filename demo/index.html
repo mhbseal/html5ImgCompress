@@ -3,9 +3,9 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>html5UploadImg</title>
+  <title>html5ImgCompress</title>
   <script src="./jquery-1.11.1.min.js"></script>
-  <script src="../dist/html5UploadImg.min.js"></script>
+  <script src="../dist/html5ImgCompress.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -41,23 +41,23 @@
   $(function () {
     // 单张
     $('#single').on('change', function (e) {
-      new html5UploadImg(e.target.files[0], {
+      new html5ImgCompress(e.target.files[0], {
         before: function(file) {
-          console.log('single: before...');
+          console.log('单张: 压缩前...');
         },
         done: function (file, base64) {
-          console.log('single: done...');
-          insertImg(file, j);
-          insertImg(base64, j++);
+          console.log('单张: 压缩成功...');
+          insertImg(file, j); // 显示原图
+          insertImg(base64, j++); // 显示压缩后
         },
         fail: function(file) {
-          console.log('single: fail...');
+          console.log('单张: 压缩失败...');
         },
         complate: function(file) {
-          console.log('single: complate...');
+          console.log('单张: 压缩完成...');
         },
         notSupport: function(file) {
-          alert('not support!');
+          alert('浏览器不支持！');
         }
       });
     });
@@ -70,30 +70,28 @@
         len = files.length,
         notSupport = false;
 
-      // 循环多张图片，需要for循环和notSupport变量支持
+      // 循环多张图片，需要for循环和notSupport变量支持（检测）
       for (; i < len; i++) {
         if (!notSupport) {
           (function(i) {
-            new html5UploadImg(files[i], {
-              before: function(file) { // 图片处理前
-                i === 0 && console.log('multiple: first before...') // 开始
-                console.log('multiple: ' + i + ' before...'); // 单张开始
+            new html5ImgCompress(files[i], {
+              before: function(file) {
+                console.log('多张: ' + i + ' 压缩前...');
               },
               done: function (file, base64) { // 这里是异步回调，done中i的顺序不能保证
-                console.log('multiple: ' + i + ' done...'); // 单张成功
-                insertImg(file, j); // 原图
-                insertImg(base64, j++); // 处理后
+                console.log('多张: ' + i + ' 压缩成功...');
+                insertImg(file, j);
+                insertImg(base64, j++);
               },
               fail: function(file) {
-                console.log('multiple: ' + i + ' fail...'); // 单张失败
+                console.log('多张: ' + i + ' 压缩失败...');
               },
-              complate: function(file) { // 图片处理完成，无论成败
-                console.log('multiple: ' + i + ' complate...'); // 单张完成
-                i === len - 1 && console.log('multiple: all complate...'); // 完成
+              complate: function(file) {
+                console.log('多张: ' + i + ' 压缩完成...');
               },
               notSupport: function(file) {
                 notSupport = true;
-                alert('not support!');
+                alert('浏览器不支持！');
               }
             });
           })(i);

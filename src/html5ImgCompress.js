@@ -22,6 +22,7 @@ __webpack_public_path__ = src.substr(0, src.lastIndexOf('/') + 1);
  *   quality: {number} 质量等级(类似PS保存事的质量等级，并不是压缩比例)，取值范围 0-1，默认值0.6
  *   before: {function} 压缩前handler
  *     @param {file} 原始上传文件
+ *     @return {boolean} 是否放弃，返回false放弃压缩
  *   done: {function} 成功handler
  *     @param {file} 原始上传文件
  *     @param {string} 生成的base64图片
@@ -32,8 +33,8 @@ __webpack_public_path__ = src.substr(0, src.lastIndexOf('/') + 1);
  *   notSupport: {function} 浏览器不支持handler
  *     @param {file} 原始上传文件
  */
-function html5UploadImg(file, options) {
-  var DEFAULTE = html5UploadImg.DEFAULTE;
+function html5ImgCompress(file, options) {
+  var DEFAULTE = html5ImgCompress.DEFAULTE;
 
   this.file = file;
   this.options = {};
@@ -45,7 +46,7 @@ function html5UploadImg(file, options) {
   this.init();
 }
 
-html5UploadImg.prototype = {
+html5ImgCompress.prototype = {
   init: function () {
     if (URL && File && document.createElement('canvas').getContext) {
       this.read(this.file);
@@ -63,6 +64,8 @@ html5UploadImg.prototype = {
       img = new Image(),
       fileURL = URL.createObjectURL(file),
       size, canvas, ctx, iosImg, quality, encoder, base64, handler, iosRenderOptions;
+
+    if (self.options.before(file) === false) return;
 
     img.src = fileURL;
 
@@ -139,7 +142,6 @@ html5UploadImg.prototype = {
       self.handler('fail', canvas, img, fileURL, base64, file);
     };
 
-    self.options.before(file);
   },
   // 处理句柄
   handler: function(action, canvas, img, fileURL, base64, file) {
@@ -204,7 +206,7 @@ html5UploadImg.prototype = {
 };
 
 // 默认参数
-html5UploadImg.DEFAULTE = {
+html5ImgCompress.DEFAULTE = {
   maxWidth: 1000,
   maxHeight: 1000,
   quality: 0.6,
@@ -216,4 +218,4 @@ html5UploadImg.DEFAULTE = {
 }
 
 
-module.exports = window.html5UploadImg = html5UploadImg;
+module.exports = window.html5ImgCompress = html5ImgCompress;
