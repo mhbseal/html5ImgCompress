@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "author": "Mu Haibao<mhbseal@163.com>",
   "homepage": "http://github.com/mhbseal/html5ImgCompress",
+  "scripts": {
+    "prod": "webpack -p"
+  },
   "devDependencies": {
     "webpack": "^1.11.0"
   }

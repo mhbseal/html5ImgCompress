@@ -10,7 +10,7 @@ var
 		output: {
 			path: paths.dist,
 			filename: '[name].min.js',
-			chunkFilename: "[id].chunk.js"
+			chunkFilename: "[id].chunk.min.js"
 		},
 		resolve: {
 			root: paths.src + 'libs/',

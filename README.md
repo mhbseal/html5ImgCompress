@@ -39,21 +39,21 @@ http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
     
     @param {file} 上传文件
     @param {object} options选项
-      maxWidth: {number} 最大宽度(如果最大高宽同时存在则根据原图的高宽比例来计算以哪个为准)，默认值1000
-      maxHeight: {number} 最大高度，默认值1000
-      quality: {number} 质量等级(类似PS保存事的质量等级，并不是压缩比例)，取值范围 0-1，默认值0.6
-      before: {function} 压缩前handler
-        @param {file} 原始上传文件
-        @return {boolean} 是否放弃，返回false放弃压缩
-      done: {function} 成功handler
-        @param {string} 生成的base64图片
-        @param {file} 原始上传文件
-      fail: {function} 失败handler
-        @param {file} 原始上传文件
-      complate: {function} 完成handler
-        @param {file} 原始上传文件
-      notSupport: {function} 浏览器不支持handler
-        @param {file} 原始上传文件
+      - maxWidth {number} 最大宽度(如果最大高宽同时存在则根据原图的高宽比例来计算以哪个为准)，默认值1000
+      - maxHeight {number} 最大高度，默认值1000
+      - quality {number} 质量等级(类似PS保存事的质量等级，并不是压缩比例)，取值范围 0-1，默认值0.6
+      - before {function} 压缩前handler
+        - param {file} 原始上传文件
+        - return {boolean} 是否放弃，返回false放弃压缩
+      - done {function} 成功handler
+        - param {string} 生成的base64图片
+        - param {file} 原始上传文件
+      - fail {function} 失败handler
+        - param {file} 原始上传文件
+      - complate {function} 完成handler
+        - param {file} 原始上传文件
+      - notSupport {function} 浏览器不支持handler
+        - param {file} 原始上传文件
 ### hack
 1.图片方向处理  
 2.安卓微信压缩问题hack  
