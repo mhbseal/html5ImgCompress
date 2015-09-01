@@ -1,4 +1,4 @@
-define(function() {
+define([], function() {
   var
     ua = navigator.userAgent,
     isInWechat = ~ua.indexOf('MicroMessenger'),

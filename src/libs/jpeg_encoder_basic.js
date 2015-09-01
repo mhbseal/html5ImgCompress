@@ -793,4 +793,4 @@ function example(quality){
     document.body.appendChild(img);
 }*/
 
-module.exports = JPEGEncoder;
+define([], function() { return JPEGEncoder; });

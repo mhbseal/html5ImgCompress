@@ -797,7 +797,7 @@
     }
 
     if (typeof define === 'function' && define.amd) {
-        define('exif-js', [], function() {
+        define([], function() {
             return EXIF;
         });
     }
