@@ -80,7 +80,7 @@ define([], function() {
           ctx = canvas.getContext('2d');
 
           if (isOldIos) { // iOS6/iOS7
-            require(['MegaPixImage'], function (MegaPixImage) {
+            require(['./libs/megapix-image'], function (MegaPixImage) {
               iosImg = new MegaPixImage(img);
               iosRenderOptions = {
                 maxWidth: canvas.width,
@@ -115,7 +115,7 @@ define([], function() {
             }
 
             if (isAndroid && isInWechat) { // 安卓微信下压缩有问题
-              require(['JPEGEncoder'], function (JPEGEncoder) {
+              require(['./libs/jpeg_encoder_basic'], function (JPEGEncoder) {
                 encoder = new JPEGEncoder();
                 base64 = encoder.encode(ctx.getImageData(0, 0, canvas.width, canvas.height), quality * 100);
                 self.handler('done', canvas, img, fileURL, base64, file);
@@ -129,7 +129,7 @@ define([], function() {
         };
 
         if (!isAndroid) { // 非安卓需要获取orientation来drawImage，所以要以引入exif
-          require(['EXIF'], function (EXIF) {
+          require(['./libs/exif'], function (EXIF) {
             EXIF.getData(img, function () {
               handler(EXIF.getTag(this, "Orientation"));
             })

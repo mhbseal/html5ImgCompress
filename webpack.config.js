@@ -1,25 +1,12 @@
-var
-	paths = {
-		src : './src/',
-		dist: './dist/'
-	},
-	config = {
-		entry: {
-			html5ImgCompress: paths.src + 'html5ImgCompress'
-		},
-		output: {
-			path: paths.dist,
-			filename: '[name].min.js',
-			chunkFilename: "[id].chunk.min.js"
-		},
-		resolve: {
-			root: paths.src + 'libs/',
-			alias: {
-				JPEGEncoder: 'jpeg_encoder_basic',
-				EXIF: 'exif',
-				MegaPixImage: 'megapix-image'
-			}
-		}
-	};
-
-module.exports = config;
+module.exports = {
+  entry: {
+    html5ImgCompress: './src/html5ImgCompress'
+  },
+  output: {
+    path: './dist/',
+    filename: '[name].min.js',
+    chunkFilename: "[id].chunk.min.js",
+    library: 'html5ImgCompress',
+    libraryTarget: 'umd'
+  }
+};

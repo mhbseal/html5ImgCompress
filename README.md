@@ -1,10 +1,15 @@
 ### demo
 http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
 ### usage
-1.引入/dist目录(这里采用的是异步加载兼容js，chunk123为处理hack的js，不能删除)  
-2.html中插入
-
+1.dist目录下文件放入project中(这里采用的是异步加载兼容js，chunk012为处理hack的js，不能删除)  
+2.引入主文件html5ImgCompress.min.js（源码采用UMD格式），所以可以用以下几种方式引入
+  1)全局
     <script src="/dist/html5ImgCompress.min.js"></script>
+    <script>new html5ImgCompress(...)</script>
+  2)amd
+    require('/dist/html5ImgCompress.min.js', function(html5ImgCompress) {...});
+  3)commonjs
+    var html5ImgCompress = require('/dist/html5ImgCompress.min.js');
 3.代码如下
 
     <input type="file" />
