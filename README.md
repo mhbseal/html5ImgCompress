@@ -22,7 +22,7 @@ http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
           before: function(file) {
             console.log('压缩前...');
             // 这里一般是对file进行filter，例如用file.type.indexOf('image') > -1来检验是否是图片
-            // 如果为非图片，则return false放弃压缩（不执行后续done、fail、complate），并相应提示
+            // 如果为非图片，则return false放弃压缩（不执行后续done、fail、complete），并相应提示
           },
           done: function (base64, file) {
             console.log('压缩成功...');
@@ -31,7 +31,7 @@ http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
           fail: function(file) {
             console.log('压缩失败...');
           },
-          complate: function(file) {
+          complete: function(file) {
             console.log('压缩完成...');
           },
           notSupport: function(file) {
@@ -58,7 +58,7 @@ http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
         - param {file} 原始上传文件
       - fail {function} 失败handler
         - param {file} 原始上传文件
-      - complate {function} 完成handler
+      - complete {function} 完成handler
         - param {file} 原始上传文件
       - notSupport {function} 浏览器不支持handler
         - param {file} 原始上传文件
