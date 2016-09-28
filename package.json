@@ -3,6 +3,7 @@
   "description": "html5 Img Compress",
   "version": "0.1.0",
   "author": "Mu Haibao<mhbseal@163.com>",
+  "main": "./src/html5ImgCompress.js",
   "homepage": "http://github.com/mhbseal/html5ImgCompress",
   "scripts": {
     "build": "webpack -p"

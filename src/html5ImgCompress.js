@@ -29,7 +29,7 @@ define([], function() {
    *     - param {string} 生成的base64图片
    *   - fail {function} 失败handler
    *     - param {file} 原始上传文件
-   *   - complate {function} 完成handler
+   *   - complete {function} 完成handler
    *     - param {file} 原始上传文件
    *   - notSupport {function} 浏览器不支持handler
    *     - param {file} 原始上传文件
@@ -152,7 +152,7 @@ define([], function() {
       URL.revokeObjectURL(fileURL);
 
       this.options[action](file, base64);
-      this.options['complate'](file);
+      this.options['complete'](file);
     },
     /**
      * 图片最大高宽校正（方向和比例）
@@ -214,7 +214,7 @@ define([], function() {
     before: function() {},
     done: function() {},
     fail: function() {},
-    complate: function() {},
+    complete: function() {},
     notSupport: function() {}
   }
 
