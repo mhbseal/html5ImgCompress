@@ -24,7 +24,7 @@ http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
             // 这里一般是对file进行filter，例如用file.type.indexOf('image') > -1来检验是否是图片
             // 如果为非图片，则return false放弃压缩（不执行后续done、fail、complete），并相应提示
           },
-          done: function (base64, file) {
+          done: function (file, base64) {
             console.log('压缩成功...');
             // ajax和服务器通信上传base64图片等操作
           },
@@ -54,8 +54,8 @@ http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
         - param {file} 原始上传文件
         - return {boolean} 是否放弃，返回false放弃压缩
       - done {function} 成功handler
-        - param {string} 生成的base64图片
         - param {file} 原始上传文件
+        - param {string} 生成的base64图片
       - fail {function} 失败handler
         - param {file} 原始上传文件
       - complete {function} 完成handler
