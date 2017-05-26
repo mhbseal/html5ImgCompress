@@ -122,9 +122,8 @@ define([], function() {
               })
             } else {
               base64 = canvas.toDataURL('image/jpeg', quality);
+              self.handler('done', canvas, img, fileURL, base64, file);
             }
-
-            self.handler('done', canvas, img, fileURL, base64, file);
           }
         };
 
