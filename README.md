@@ -1,5 +1,3 @@
-### demo
-http://mhbseal.com/demo/html5/html5ImgCompress/demo/index.html
 ### usage
 1.dist目录下文件放入project中(这里采用的是异步加载兼容js，chunk012为处理hack的js，不能删除)    
 2.引入主文件html5ImgCompress.min.js（源码采用UMD格式），所以可以用以下几种方式引入  
